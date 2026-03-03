@@ -1,0 +1,17 @@
+import re
+
+receipt_text = """...ваш текст чека..."""
+
+bin_match = re.search(r'БИН\s+(\d+)', receipt_text)
+bin_value = bin_match.group(1) if bin_match else "Не найден"
+
+item_pattern = r'\d+\.\n(.*?)\n[\d,]+\s+x\s+[\d, ]+\n([\d, ]+)'
+
+items = re.findall(item_pattern, receipt_text)
+
+print(f"БИН организации: {bin_value}")
+print("-" * 30)
+for name, price in items:
+    clean_name = name.strip()
+    clean_price = price.replace(' ', '').replace(',', '.')
+    print(f"Товар: {clean_name[:40]}... | Цена: {clean_price} тг")
